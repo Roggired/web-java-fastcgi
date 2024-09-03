@@ -1,0 +1,25 @@
+services:
+  httpd:
+    build: httpd
+    container_name: web-java-fastcgi-httpd
+    ports:
+      - "8800:80"
+    networks:
+      web-java-fastcgi:
+        ipv4_address: 172.26.0.2
+  app:
+    build:
+      context: .
+      dockerfile: app/Dockerfile
+    container_name: web-java-fastcgi-app
+    networks:
+      web-java-fastcgi:
+        ipv4_address: 172.26.0.3
+
+networks:
+  web-java-fastcgi:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.26.0.0/16
+          gateway: 172.26.0.1
